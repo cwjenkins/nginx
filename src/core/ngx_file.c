@@ -613,6 +613,11 @@ ngx_create_paths(ngx_cycle_t *cycle, ngx_uid_t user)
                 return NGX_ERROR;
             }
         }
+	else {
+                ngx_log_error(NGX_LOG_INFO, cycle->log, err,
+                              ngx_create_dir_n " \"%s\" create dir succeeded",
+                              path[i]->name.data);
+	}
 
         if (user == (ngx_uid_t) NGX_CONF_UNSET_UINT) {
             continue;
@@ -635,6 +640,11 @@ ngx_create_paths(ngx_cycle_t *cycle, ngx_uid_t user)
                               path[i]->name.data, user);
                 return NGX_ERROR;
             }
+	    else {
+                ngx_log_error(NGX_LOG_INFO, cycle->log, ngx_errno,
+                              "chown(\"%s\", %d) succeeded!",
+                              path[i]->name.data, user);
+	    }
         }
 
         if ((fi.st_mode & (S_IRUSR|S_IWUSR|S_IXUSR))
